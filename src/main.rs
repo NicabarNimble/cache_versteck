@@ -2,6 +2,8 @@ use drand_core::HttpClient;
 use rand::{seq::SliceRandom, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use std::io::{self, BufRead};
+use std::fs::OpenOptions;
+use std::io::prelude::*;
 
 #[tokio::main]
 async fn main() {
@@ -23,4 +25,17 @@ async fn main() {
     let dice: Vec<i32> = (1..=size).collect();
     let roll = dice.choose(&mut rng).unwrap();
     println!("Dice roll: {} (round {})", roll, round);
+
+    // Log the result to a file
+
+    let log_entry = format!("Dice roll: {} (round {})\n", roll, round);
+
+    let mut file = OpenOptions::new()
+        .write(true)
+        .append(true)
+        .open("dice_roll.log")
+        .expect("Failed to open log file");
+
+        file.write_all(log_entry.as_bytes()).expect("Failed to write to log file");
+
 }
