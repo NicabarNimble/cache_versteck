@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 drand_core = "0.0.7"
 tlock = "0.0.2"
+bevy = "0.10.1"
