@@ -33,7 +33,7 @@ async fn main() {
     let mut file = OpenOptions::new()
         .write(true)
         .append(true)
-        .open("dice_roll.log")
+        .open("logs/dice_roll.log")
         .expect("Failed to open log file");
 
         file.write_all(log_entry.as_bytes()).expect("Failed to write to log file");
