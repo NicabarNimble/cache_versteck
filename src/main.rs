@@ -1,6 +1,7 @@
 use drand_core::HttpClient;
 use rand::{seq::SliceRandom, SeedableRng};
 use rand_chacha::ChaCha20Rng;
+use std::io;
 
 #[tokio::main]
 async fn main() {
@@ -11,10 +12,19 @@ async fn main() {
     let seed: <ChaCha20Rng as SeedableRng>::Seed = latest.randomness().try_into().unwrap();
     let mut rng = ChaCha20Rng::from_seed(seed);
 
-    let dice = vec![
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    ];
+    println!("Enter the size of the dice:");
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).expect("Failed to read input");
+
+    let size: i32 = match input.trim().parse() {
+        Ok(value) => value,
+        Err(_) => {
+            println!("Nice try but that's not going to cut it!");
+            return;
+        }
+    };
+
+    let dice: Vec<i32> = (1..=size).collect();
 
     let roll = dice.choose(&mut rng).unwrap();
     println!("Dice roll: {} (round {})", roll, round);
